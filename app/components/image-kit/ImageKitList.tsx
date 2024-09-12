@@ -34,7 +34,7 @@ const ImageKitList = () => {
               path={image.url}
               alt={`Image ${image.id}`}
               width={600}
-              height={800}
+              height={320}
               loading="lazy"
               lqip={{ active: true, quality: 20 }}
             />

@@ -10,7 +10,7 @@ interface ImageState {
 }
 
 export const fetchImages = createAsyncThunk('images/fetchImages', async () => {
-  const response = await axios.get('https://imagekit-io-tst.vercel.app/image-path.json');
+  const response = await axios.get('https://imagekit-tst.vercel.app/image-path.json');
   return response.data;
 });
 
