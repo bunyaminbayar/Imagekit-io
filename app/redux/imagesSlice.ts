@@ -1,32 +1,41 @@
+// imagesSlice.ts
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { ImageStatus } from '@/app/types/enums'
 
-// Async action for fetching images
+interface ImageState {
+  images: any[];
+  status: ImageStatus;
+  error: string | null;
+}
+
 export const fetchImages = createAsyncThunk('images/fetchImages', async () => {
   const response = await axios.get('http://localhost:3000/image-path.json');
   return response.data;
 });
 
+const initialState: ImageState = {
+  images: [],
+  status: ImageStatus.IDLE,
+  error: null,
+};
+
 const imagesSlice = createSlice({
   name: 'images',
-  initialState: {
-    images: [],
-    status: 'idle',
-    error: null,
-  },
+  initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchImages.pending, (state) => {
-        state.status = 'loading';
+        state.status = ImageStatus.LOADING;
       })
       .addCase(fetchImages.fulfilled, (state, action) => {
-        state.status = 'succeeded';
+        state.status = ImageStatus.SUCCEEDED;
         state.images = action.payload;
       })
       .addCase(fetchImages.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.error.message;
+        state.status = ImageStatus.FAILED;
+        state.error = action.error.message || 'An error occurred';
       });
   },
 });
